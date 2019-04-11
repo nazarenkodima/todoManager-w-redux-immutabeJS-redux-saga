@@ -10,5 +10,15 @@ export const api = {
                 },
             });
         },
+        create (message) {
+            return fetch(`${MAIN_URL}`, {
+                method:  'POST',
+                headers: {
+                    'Content-Type':  'application/json',
+                    'Authorization': TOKEN,
+                },
+                body: JSON.stringify({ message }),
+            });
+        },
     },
 };

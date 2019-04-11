@@ -14,7 +14,6 @@ const mapStateToProps = (state) => {
 export default class Spinner extends Component {
     render () {
         const { isFetching } = this.props;
-        console.log('isFetching → ', isFetching);
 
         return isFetching? <div className = { Styles.spinner } /> : null;
     }

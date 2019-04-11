@@ -11,6 +11,9 @@ export const todosReducer = (state = initialState, action) => {
         case types.FILL_TODOS:
             return fromJS(action.payload);
 
+        case types.CREATE_TODO:
+            return state.unshift(fromJS(action.payload));
+
         default:
             return state;
     }

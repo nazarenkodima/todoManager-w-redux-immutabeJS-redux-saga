@@ -12,7 +12,7 @@ export function* fetchTodos () {
         const response =  yield apply(api, api.todos.fetch);
         const { data : todos, message } = yield apply(response, response.json);
 
-        // console.log('todos → ', todos);
+        console.log('todos → ', todos);
         if (response.status !== 200) {
             throw new Error(message);
         }
