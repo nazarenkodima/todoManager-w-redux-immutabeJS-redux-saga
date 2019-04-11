@@ -64,6 +64,7 @@ export default class Scheduler extends Component {
 
     render () {
         const { todos } = this.props;
+        
         const todoList = todos.map((task) => (
             <Catcher key = { task.get('id') }>
                 <Task

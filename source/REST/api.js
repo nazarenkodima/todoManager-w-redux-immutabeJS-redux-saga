@@ -20,5 +20,13 @@ export const api = {
                 body: JSON.stringify({ message }),
             });
         },
+        delete (POST_ID) {
+            return fetch(`${MAIN_URL}/${POST_ID}`, {
+                method:  'DELETE',
+                headers: {
+                    'Authorization': TOKEN,
+                },
+            });
+        },
     },
 };
