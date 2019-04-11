@@ -27,7 +27,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(
             { fetchTodosAsync: todoActions.fetchTodosAsync,
-              createTodoAsync: todoActions.createTodoAsync  
+              createTodoAsync: todoActions.createTodoAsync,
+              removeTodoAsync: todoActions.removeTodoAsync  
             },
             dispatch),
     };
@@ -63,15 +64,16 @@ export default class Scheduler extends Component {
     };
 
     render () {
-        const { todos } = this.props;
-        
+        const { todos, actions } = this.props;
+
         const todoList = todos.map((task) => (
             <Catcher key = { task.get('id') }>
                 <Task
+                 actions = { actions }
                 completed = { task.completed }
                 favorite = { task.favorite }
-                id = { task.id }
-                key = { task.id }
+                id = { task.get('id') }
+                key = { task.get('id') }
                 message = { task.get('message') }
                 { ...task }
             />

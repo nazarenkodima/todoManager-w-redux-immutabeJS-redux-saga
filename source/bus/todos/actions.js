@@ -16,6 +16,12 @@ export const todoActions = {
             payload: todo,
         };
     },
+    removeTodo: (todoID) => {
+        return {
+            type:    types.REMOVE_TODO,
+            payload: todoID,
+        };
+    },
     //Async
     fetchTodosAsync: () => {
         return {
@@ -26,6 +32,12 @@ export const todoActions = {
         return {
             type:    types.CREATE_TODO_ASYNC,
             payload: todo,
+        };
+    },
+    removeTodoAsync: (todoID) => {
+        return {
+            type:    types.REMOVE_TODO_ASYNC,
+            payload: todoID,
         };
     },
 }

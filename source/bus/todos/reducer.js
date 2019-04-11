@@ -14,6 +14,9 @@ export const todosReducer = (state = initialState, action) => {
         case types.CREATE_TODO:
             return state.unshift(fromJS(action.payload));
 
+        case types.REMOVE_TODO:
+            return state.filter((todo) => todo.get('id') !== action.payload);
+
         default:
             return state;
     }
