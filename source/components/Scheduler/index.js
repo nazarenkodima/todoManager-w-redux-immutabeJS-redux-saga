@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 
 // Instruments
 import Styles from './styles.m.css';
-import { tasks } from './tasks';
 
 // Components
 import Task from '../Task';
 import Checkbox from '../../theme/assets/Checkbox';
+import Spinner from '../Spinner';
 
 //Actions
 import { todoActions } from '../../bus/todos/actions';
@@ -62,6 +62,7 @@ export default class Scheduler extends Component {
 
         return (
             <section className = { Styles.scheduler }>
+            <Spinner/>
                 <main>
                     <header>
                         <h1>Планировщик задач</h1>
