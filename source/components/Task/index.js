@@ -12,10 +12,31 @@ import Edit from '../../theme/assets/Edit';
 import Star from '../../theme/assets/Star';
 
 export default class Task extends PureComponent {
+    taskInput = React.createRef();
+
+    _getTaskShape = ({
+        id = this.props.id,
+        completed = this.props.completed,
+        favorite = this.props.favorite,
+        message = this.props.message,
+    }) => ({
+        id,
+        completed,
+        favorite,
+        message,
+
+    });
+
     _removeTodo = () => {
         const { actions, id } = this.props;
 
         actions.removeTodoAsync(id);
+    };
+
+    _toggleTaskCompleted = () => {
+        const { actions, completed } = this.props;
+
+        actions.updateTodoAsync(this._getTaskShape({ completed: !completed }));
     };
 
     render () {
@@ -29,12 +50,14 @@ export default class Task extends PureComponent {
             <li className = { styles }>
                 <div className = { Styles.content }>
                     <Checkbox
-                        inlineBlock
+                        checked = { completed }
                         className = { Styles.toggleTaskCompletedState }
                         color1 = '#3B8EF3'
                         color2 = '#FFF'
+                        inlineBlock
+                        onClick = { this._toggleTaskCompleted }
                     />
-                    <input disabled type = 'text' value = { message } />
+                    <input disabled ref = { this.taskInput } type = 'text' value = { message } />
                 </div>
                 <div className = { Styles.actions }>
                     <Star

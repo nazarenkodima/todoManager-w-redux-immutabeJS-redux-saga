@@ -7,6 +7,8 @@ import { bindActionCreators } from 'redux';
 // Instruments
 import Styles from './styles.m.css';
 import { scheduler } from '../../bus/forms/shapes';
+import FlipMove from "react-flip-move";
+import { sortTasksByGroup } from '../../instruments/helpers';
 
 // Components
 import Task from '../Task';
@@ -18,6 +20,7 @@ import Catcher from '../Catcher';
 import { todoActions } from '../../bus/todos/actions';
 
 const mapStateToProps = (state) => {
+    console.log('state → ', state);
     return {
         todos: state.todos,
     };
@@ -28,7 +31,9 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators(
             { fetchTodosAsync: todoActions.fetchTodosAsync,
               createTodoAsync: todoActions.createTodoAsync,
-              removeTodoAsync: todoActions.removeTodoAsync  
+              removeTodoAsync: todoActions.removeTodoAsync,
+              updateTodoAsync: todoActions.updateTodoAsync,  
+              completeAllTodoAsync: todoActions.completeAllTodoAsync,
             },
             dispatch),
     };
@@ -42,12 +47,6 @@ export default class Scheduler extends Component {
         actions.fetchTodosAsync();
     }
 
-
-    _submitForm = (formData, actions) => {
-        this._createTodo(formData);
-        actions.resetForm();
-    };
-
     _createTodo = ({ todo }) => {
         if (!todo) {
             return null;
@@ -55,25 +54,28 @@ export default class Scheduler extends Component {
         this.props.actions.createTodoAsync(todo);
     };
 
-    _submitFormOnEnter = (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
 
-            this.formikForm.current.submitForm();
-        }
+    _submitForm = (formData, actions) => {
+        this._createTodo(formData);
+        actions.resetForm();
     };
+
+    _searchTodo = (event) => {
+        console.log('event.target.value.toLowerCase() → ', event.target.value.toLowerCase());
+    }
 
     render () {
         const { todos, actions } = this.props;
 
+        const allCompleted = todos.every((todo) => todo.get('completed') === true);
+
         const todoList = todos.map((task) => (
             <Catcher key = { task.get('id') }>
                 <Task
-                 actions = { actions }
-                completed = { task.completed }
-                favorite = { task.favorite }
+                actions = { actions }
+                completed = { task.get('completed') }
+                favorite = { task.get('favorite')}
                 id = { task.get('id') }
-                key = { task.get('id') }
                 message = { task.get('message') }
                 { ...task }
             />
@@ -86,7 +88,7 @@ export default class Scheduler extends Component {
                 <main>
                     <header>
                         <h1>Task Manager</h1>
-                        <input placeholder = 'Поиск' type = 'search' />
+                        <input placeholder = 'search' type = 'search' onChange = { this._searchTodo }/>
                     </header>
                     <Formik
                         initialValues = { scheduler.shape}
@@ -105,7 +107,9 @@ export default class Scheduler extends Component {
                             <button type = 'submit'>add Todo</button>
                         </Form>
                         <div className = { Styles.overlay }>
-                            <ul>{todoList}</ul>
+                            <ul>
+                                <FlipMove>{todoList}</FlipMove>
+                            </ul>
                         </div>
                         </section>
                             )
@@ -114,7 +118,11 @@ export default class Scheduler extends Component {
                         onSubmit = { this._submitForm }
                     />
                     <footer>
-                        <Checkbox checked color1 = '#363636' color2 = '#fff' />
+                        <Checkbox 
+                        checked = { allCompleted }
+                        color1 = '#363636'
+                        color2 = '#fff'
+                        onClick = { actions.completeAllTodoAsync } />
                         <span className = { Styles.completeAllTasks }>
                             All tasks completed
                         </span>

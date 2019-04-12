@@ -22,6 +22,17 @@ export const todoActions = {
             payload: todoID,
         };
     },
+    updateTodo: (todo) => {
+        return {
+            type:    types.UPDATE_TODO,
+            payload: todo,
+        };
+    },
+    completeAllTodo: () => {
+        return {
+            type: types.COMPLETE_ALL_TODO,
+        };
+    },
     //Async
     fetchTodosAsync: () => {
         return {
@@ -40,5 +51,15 @@ export const todoActions = {
             payload: todoID,
         };
     },
-}
-;
+    updateTodoAsync: (todo) => {
+        return {
+            type:    types.UPDATE_TODO_ASYNC,
+            payload: todo,
+        };
+    },
+    completeAllTodoAsync: () => {
+        return {
+            type: types.COMPLETE_ALL_TODO_ASYNC,
+        };
+    },
+};

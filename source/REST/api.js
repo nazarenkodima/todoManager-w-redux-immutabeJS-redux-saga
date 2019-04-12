@@ -28,5 +28,21 @@ export const api = {
                 },
             });
         },
+        update (todo) {
+            let updatedTodo = todo;
+
+            if (!Array.isArray(todo)) {
+                updatedTodo = [todo];
+            }
+
+            return fetch(`${MAIN_URL}`, {
+                method:  'PUT',
+                headers: {
+                    'Content-Type':  'application/json',
+                    'Authorization': TOKEN,
+                },
+                body: JSON.stringify(updatedTodo),
+            });
+        },
     },
 };
