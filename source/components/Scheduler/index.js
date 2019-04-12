@@ -18,11 +18,12 @@ import Catcher from '../Catcher';
 
 //Actions
 import { todoActions } from '../../bus/todos/actions';
+import { searchActions } from '../../bus/search/actions';
 
-const mapStateToProps = (state) => {
-    console.log('state → ', state);
+const mapStateToProps = ({todos, search}) => {
     return {
-        todos: state.todos,
+        todos: todos,
+        searchTodo: search.get('searchTodo')
     };
 };
 
@@ -34,6 +35,7 @@ const mapDispatchToProps = (dispatch) => {
               removeTodoAsync: todoActions.removeTodoAsync,
               updateTodoAsync: todoActions.updateTodoAsync,  
               completeAllTodoAsync: todoActions.completeAllTodoAsync,
+              searchTodo: searchActions.searchTodo
             },
             dispatch),
     };
@@ -54,22 +56,28 @@ export default class Scheduler extends Component {
         this.props.actions.createTodoAsync(todo);
     };
 
+    _filterTodo = (todo) => {
+        const { searchTodo } = this.props;
+        return todo.get('message').toLowerCase().includes(searchTodo);
+    };
+
+    _searchTodo = (event) => {
+        const { actions } = this.props;
+         actions.searchTodo(event.target.value)
+    }
 
     _submitForm = (formData, actions) => {
         this._createTodo(formData);
         actions.resetForm();
     };
 
-    _searchTodo = (event) => {
-        console.log('event.target.value.toLowerCase() → ', event.target.value.toLowerCase());
-    }
 
     render () {
         const { todos, actions } = this.props;
-
+     
         const allCompleted = todos.every((todo) => todo.get('completed') === true);
 
-        const todoList = todos.map((task) => (
+        const todoList = todos.filter(this._filterTodo).map((task) => (
             <Catcher key = { task.get('id') }>
                 <Task
                 actions = { actions }

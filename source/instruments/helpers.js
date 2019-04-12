@@ -4,12 +4,12 @@ export function getDisplayName (WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-export const sortTasksByDate = (tasks) => {
-    return tasks.sort((task1, task2) => {
-        if (moment(task1.created).unix() < moment(task2.created).unix()) {
+export const sorttodosByDate = (todos) => {
+    return todos.sort((todo1, todo2) => {
+        if (moment(todo1.created).unix() < moment(todo2.created).unix()) {
             return 1;
         } else if (
-            moment(task1.created).unix() > moment(task2.created).unix()
+            moment(todo1.created).unix() > moment(todo2.created).unix()
         ) {
             return -1;
         }
@@ -18,16 +18,16 @@ export const sortTasksByDate = (tasks) => {
     });
 };
 
-export const sortTasksByGroup = (tasks) => {
-    const favorite = tasks.filter((task) => task.favorite && !task.completed);
-    const usual = tasks.filter((task) => !task.favorite && !task.completed);
-    const completed = sortTasksByDate(tasks.filter((task) => task.completed));
+export const sorttodosByGroup = (todos) => {
+    const favorite = todos.filter((todo) => todo.favorite && !todo.completed);
+    const usual = todos.filter((todo) => !todo.favorite && !todo.completed);
+    const completed = sorttodosByDate(todos.filter((todo) => todo.completed));
 
     const sortedCompleted = [
-        ...completed.sort((task1, task2) => {
-            if (task1.favorite && !task2.favorite) {
+        ...completed.sort((todo1, todo2) => {
+            if (todo1.favorite && !todo2.favorite) {
                 return -1;
-            } else if (!task1.favorite && task2.favorite) {
+            } else if (!todo1.favorite && todo2.favorite) {
                 return 1;
             }
 
@@ -36,8 +36,8 @@ export const sortTasksByGroup = (tasks) => {
     ];
 
     return [
-        ...sortTasksByDate(favorite),
-        ...sortTasksByDate(usual),
+        ...sorttodosByDate(favorite),
+        ...sorttodosByDate(usual),
         ...sortedCompleted
     ];
 };
