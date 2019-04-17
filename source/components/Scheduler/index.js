@@ -20,9 +20,9 @@ import Catcher from '../Catcher';
 import { todoActions } from '../../bus/todos/actions';
 import { searchActions } from '../../bus/search/actions';
 
-const mapStateToProps = ({todos, search}) => {
+const mapStateToProps = ({todos, search},) => {
     return {
-        todos: todos,
+        todos: sortTasksByGroup(todos),
         searchTodo: search.get('searchTodo')
     };
 };
@@ -30,12 +30,8 @@ const mapStateToProps = ({todos, search}) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(
-            { fetchTodosAsync: todoActions.fetchTodosAsync,
-              createTodoAsync: todoActions.createTodoAsync,
-              removeTodoAsync: todoActions.removeTodoAsync,
-              updateTodoAsync: todoActions.updateTodoAsync,  
-              completeAllTodoAsync: todoActions.completeAllTodoAsync,
-              searchTodo: searchActions.searchTodo
+            { ...todoActions,
+              ...searchActions
             },
             dispatch),
     };
@@ -58,7 +54,7 @@ export default class Scheduler extends Component {
 
     _filterTodo = (todo) => {
         const { searchTodo } = this.props;
-        return todo.get('message').toLowerCase().includes(searchTodo);
+        return todo.get('message').toLocaleLowerCase().includes(searchTodo);
     };
 
     _searchTodo = (event) => {
@@ -76,18 +72,19 @@ export default class Scheduler extends Component {
         const { todos, actions } = this.props;
      
         const allCompleted = todos.every((todo) => todo.get('completed') === true);
-
-        const todoList = todos.filter(this._filterTodo).map((task) => (
-            <Catcher key = { task.get('id') }>
+        console.log('todos → ', todos);
+        const todoList = todos.filter(this._filterTodo).map((todo) => (
+            // <Catcher >
                 <Task
                 actions = { actions }
-                completed = { task.get('completed') }
-                favorite = { task.get('favorite')}
-                id = { task.get('id') }
-                message = { task.get('message') }
-                { ...task }
+                completed = { todo.get('completed') }
+                favorite = { todo.get('favorite')}
+                id = { todo.get('id') }
+                key = { todo.get('id') }
+                message = { todo.get('message') }
+                { ...todo }
             />
-            </Catcher>
+            /* </Catcher> */
         ));
 
         return (
