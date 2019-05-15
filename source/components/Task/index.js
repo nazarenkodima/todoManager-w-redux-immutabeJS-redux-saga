@@ -87,7 +87,6 @@ export default class Task extends PureComponent {
 
     render () {
         const { message, completed, favorite, editTodo, id } = this.props;
-
         const editInput = editTodo.get('id') === id;
 
         const styles = cx(Styles.task, {
@@ -110,7 +109,7 @@ export default class Task extends PureComponent {
                         maxLength = { 50 }
                         ref = { this.taskInput }
                         type = 'text'
-                        value = { edit ? editTodo.get('newMessage') : message }
+                        value = { editInput ? editTodo.get('newMessage') : message }
                         onChange = { this._updateNewTaskMessage }
                         onKeyDown = { this._updateTaskMessageOnKeyDown }
                     />
