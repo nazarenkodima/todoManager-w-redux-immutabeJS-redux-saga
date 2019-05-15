@@ -12,8 +12,6 @@ export function* createTodo ({ payload: todo }) {
         const response =  yield apply(api, api.todos.create, [todo]);
         const { data : message, messageError } = yield apply(response, response.json);
 
-        console.log('message → ', message);
-
         if (response.status !== 200) {
             throw new Error(messageError);
         }

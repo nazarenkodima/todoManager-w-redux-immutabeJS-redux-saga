@@ -19,11 +19,14 @@ import Catcher from '../Catcher';
 //Actions
 import { todoActions } from '../../bus/todos/actions';
 import { searchActions } from '../../bus/search/actions';
+import { editActions } from '../../bus/editTodo/actions';
 
-const mapStateToProps = ({todos, search},) => {
+
+const mapStateToProps = ({todos, search, editTodo },) => {
     return {
         todos: sortTasksByGroup(todos),
-        searchTodo: search.get('searchTodo')
+        searchTodo: search.get('searchTodo'),
+        editTodo: editTodo
     };
 };
 
@@ -31,7 +34,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(
             { ...todoActions,
-              ...searchActions
+              ...searchActions,
+              ...editActions
             },
             dispatch),
     };
@@ -54,7 +58,7 @@ export default class Scheduler extends Component {
 
     _filterTodo = (todo) => {
         const { searchTodo } = this.props;
-        return todo.get('message').toLocaleLowerCase().includes(searchTodo);
+        return todo.get('message').toLowerCase().includes(searchTodo);
     };
 
     _searchTodo = (event) => {
@@ -69,22 +73,22 @@ export default class Scheduler extends Component {
 
 
     render () {
-        const { todos, actions } = this.props;
-     
+        const { todos, actions, editTodo } = this.props;
+        
         const allCompleted = todos.every((todo) => todo.get('completed') === true);
-        console.log('todos → ', todos);
+
         const todoList = todos.filter(this._filterTodo).map((todo) => (
-            // <Catcher >
+                <Catcher key = { todo.get('id') }>
                 <Task
                 actions = { actions }
                 completed = { todo.get('completed') }
                 favorite = { todo.get('favorite')}
                 id = { todo.get('id') }
-                key = { todo.get('id') }
                 message = { todo.get('message') }
+                editTodo = { editTodo }
                 { ...todo }
             />
-            /* </Catcher> */
+             </Catcher> 
         ));
 
         return (

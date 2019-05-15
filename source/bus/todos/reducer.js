@@ -18,13 +18,10 @@ export const todosReducer = (state = initialState, action) => {
             return state.filter((todo) => todo.get('id') !== action.payload);
 
         case types.UPDATE_TODO:
-            return state.update(
-                state.findIndex((todo) => {
-                    return todo.get('id') === action.payload.id;
-                }),
-                (todo) => todo.merge(action.payload)
-
-            );
+            return state.update(state.findIndex((todo) => {
+                return todo.get('id') === action.payload.id;
+            }),
+            (todo) => todo.merge(action.payload));
 
         case types.COMPLETE_ALL_TODO:
             return state.map((todo) => todo.set('completed', true));

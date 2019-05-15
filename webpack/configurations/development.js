@@ -26,7 +26,7 @@ export const generateDevelopmentConfiguration = () =>
             output: {
                 filename: 'js/[name].[hash:5].js',
             },
-            devtool:   'cheap-module-eval-source-map',
+            devtool:   'cheap-module-source-map',
             devServer: {
                 hot:                true,
                 historyApiFallback: true,
