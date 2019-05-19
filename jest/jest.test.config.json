@@ -5,8 +5,16 @@
     "verbose": false,
     "notify": true,
     "bail": false,
-    "collectCoverage": false,
-    "collectCoverageFrom": ["<rootDir>/source/**/*.js"],
+    "globals": {
+        "__DEV__": true
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+        "<rootDir>/source/bus/editTodo/**/*.{js,jsx}",
+        "<rootDir>/source/bus/ui/**/*.{js,jsx}",
+        "<rootDir>/source/bus/search/**/*.{js,jsx}",
+        "<rootDir>/source/bus/todos/**/*.{js,jsx}"
+    ],
     "coveragePathIgnorePatterns": [
         "/node_modules/",
         "/build/",

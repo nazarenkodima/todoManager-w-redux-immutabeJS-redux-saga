@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`todoReducer: should handle REMOVE_TODO action 1`] = `Immutable.List []`;

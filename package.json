@@ -37,6 +37,7 @@
         "redux": "4.0.1",
         "redux-actions": "2.6.4",
         "redux-saga": "0.16.2",
+        "redux-saga-test-plan": "~3.7.0",
         "reselect": "4.0.0",
         "reset-css": "4.0.1",
         "socket.io-client": "2.2.0",
