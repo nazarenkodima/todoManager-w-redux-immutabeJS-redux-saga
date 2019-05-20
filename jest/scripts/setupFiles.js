@@ -48,23 +48,22 @@ const responseDataFail = {
     message: errorMessage,
 };
 
-const responseDataSuccess2 = {
-    data:    message,
-    message: successMesasge,
-};
-
 const fetchResponseSuccess = {
     status: 200,
     json:   jest.fn(() => Promise.resolve(responseDataSuccess)),
 };
 
-const fetchResponseSuccess2 = {
-    status: 200,
-    json:   jest.fn(() => Promise.resolve(responseDataSuccess2)),
+const fetchResponseSuccess204 = {
+    status: 204,
 };
 
 const fetchResponseFail400 = {
     status: 400,
+    json:   jest.fn(() => Promise.resolve(responseDataFail)),
+};
+
+const fetchResponseFail401 = {
+    status: 401,
     json:   jest.fn(() => Promise.resolve(responseDataFail)),
 };
 
@@ -79,8 +78,9 @@ global.__ = {
     text,
     todos,
     fetchResponseSuccess,
-    fetchResponseSuccess2,
     fetchResponseFail400,
+    fetchResponseSuccess204,
+    fetchResponseFail401,
     todo,
 };
 

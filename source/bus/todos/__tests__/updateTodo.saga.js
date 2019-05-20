@@ -6,24 +6,24 @@ import { expectSaga } from 'redux-saga-test-plan';
 import { api } from '../../../REST';
 import { todoActions } from '../actions';
 import { uiActions } from '../../ui/actions';
-import { createTodo } from '../saga/workers';
+import { updateTodo } from '../saga/workers';
 
-const action = todoActions.createTodoAsync(__.message);
+const action = todoActions.updateTodoAsync(__.message);
 
 describe('createTodo saga:', () => {
     test('should complete 200 status scenario', async () => {
-        await expectSaga(createTodo, action)
+        await expectSaga(updateTodo, action)
             .put(uiActions.startFetching())
-            .provide([[apply(api, api.todos.create, [__.message]), __.fetchResponseSuccess, __.fetchResponseSuccess.json]])
-            .put(todoActions.createTodo([__.message]))
+            .provide([[apply(api, api.todos.update, [__.message]), __.fetchResponseSuccess, __.fetchResponseSuccess.json]])
+            .put(todoActions.updateTodo(__.message))
             .put(uiActions.stopFetching())
             .run();
     });
 
     test('should complete 400 status scenario', async () => {
-        await expectSaga(createTodo, action)
+        await expectSaga(updateTodo, action)
             .put(uiActions.startFetching())
-            .provide([[apply(api, api.todos.create, [__.message]), __.fetchResponseFail400, __.fetchResponseFail400.json]])
+            .provide([[apply(api, api.todos.update, [__.message]), __.fetchResponseFail400, __.fetchResponseFail400.json]])
             .put(uiActions.stopFetching())
             .run();
     });

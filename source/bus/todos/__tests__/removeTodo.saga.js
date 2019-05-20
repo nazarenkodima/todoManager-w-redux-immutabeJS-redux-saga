@@ -6,24 +6,24 @@ import { expectSaga } from 'redux-saga-test-plan';
 import { api } from '../../../REST';
 import { todoActions } from '../actions';
 import { uiActions } from '../../ui/actions';
-import { createTodo } from '../saga/workers';
+import { removeTodo } from '../saga/workers';
 
-const action = todoActions.createTodoAsync(__.message);
+const action = todoActions.removeTodoAsync(__.id);
 
 describe('createTodo saga:', () => {
-    test('should complete 200 status scenario', async () => {
-        await expectSaga(createTodo, action)
+    test('should complete 204 status scenario', async () => {
+        await expectSaga(removeTodo, action)
             .put(uiActions.startFetching())
-            .provide([[apply(api, api.todos.create, [__.message]), __.fetchResponseSuccess, __.fetchResponseSuccess.json]])
-            .put(todoActions.createTodo([__.message]))
+            .provide([[apply(api, api.todos.delete, [__.id]), __.fetchResponseSuccess204]])
+            .put(todoActions.removeTodo(__.id))
             .put(uiActions.stopFetching())
             .run();
     });
 
     test('should complete 400 status scenario', async () => {
-        await expectSaga(createTodo, action)
+        await expectSaga(removeTodo, action)
             .put(uiActions.startFetching())
-            .provide([[apply(api, api.todos.create, [__.message]), __.fetchResponseFail400, __.fetchResponseFail400.json]])
+            .provide([[apply(api, api.todos.delete, [__.id]), __.fetchResponseFail401]])
             .put(uiActions.stopFetching())
             .run();
     });
