@@ -10,11 +10,14 @@ const mapStateToProps = (state) => {
         isFetching: state.ui.get('isFetching'),
     };
 };
-@connect(mapStateToProps)
-export default class Spinner extends Component {
+// @connect(mapStateToProps)
+
+class Spinner extends Component {
     render () {
         const { isFetching } = this.props;
 
         return isFetching? <div className = { Styles.spinner } /> : null;
     }
 }
+
+export default connect(mapStateToProps)(Spinner);

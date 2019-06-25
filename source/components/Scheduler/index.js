@@ -21,12 +21,11 @@ import { todoActions } from '../../bus/todos/actions';
 import { searchActions } from '../../bus/search/actions';
 import { editActions } from '../../bus/editTodo/actions';
 
-
-const mapStateToProps = ({todos, search, editTodo },) => {
+const mapStateToProps = ({ todos, search, editTodo },) => {
     return {
-        todos: sortTasksByGroup(todos),
+        todos:      sortTasksByGroup(todos),
         searchTodo: search.get('searchTodo'),
-        editTodo: editTodo
+        editTodo,
     };
 };
 
@@ -34,20 +33,22 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(
             { ...todoActions,
-              ...searchActions,
-              ...editActions
+                ...searchActions,
+                ...editActions,
             },
             dispatch),
     };
 };
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Scheduler extends Component {
-    formikForm = createRef();
+// @connect(mapStateToProps, mapDispatchToProps)
+
+class Scheduler extends Component {
 
     componentDidMount () {
         const { actions } = this.props;
+
         actions.fetchTodosAsync();
     }
+    formikForm = createRef();
 
     _createTodo = ({ todo }) => {
         if (!todo) {
@@ -58,12 +59,14 @@ export default class Scheduler extends Component {
 
     _filterTodo = (todo) => {
         const { searchTodo } = this.props;
+
         return todo.get('message').toLowerCase().includes(searchTodo);
     };
 
     _searchTodo = (event) => {
         const { actions } = this.props;
-         actions.searchTodo(event.target.value)
+
+        actions.searchTodo(event.target.value);
     }
 
     _submitForm = (formData, actions) => {
@@ -71,67 +74,67 @@ export default class Scheduler extends Component {
         actions.resetForm();
     };
 
-
     render () {
         const { todos, actions, editTodo } = this.props;
-        
+
         const allCompleted = todos.every((todo) => todo.get('completed') === true);
 
         const todoList = todos.filter(this._filterTodo).map((todo) => (
-                <Catcher key = { todo.get('id') }>
+            <Catcher key = { todo.get('id') }>
                 <Task
-                actions = { actions }
-                completed = { todo.get('completed') }
-                favorite = { todo.get('favorite')}
-                id = { todo.get('id') }
-                message = { todo.get('message') }
-                editTodo = { editTodo }
-                { ...todo }
-            />
-             </Catcher> 
+                    actions = { actions }
+                    completed = { todo.get('completed') }
+                    editTodo = { editTodo }
+                    favorite = { todo.get('favorite') }
+                    id = { todo.get('id') }
+                    message = { todo.get('message') }
+                    { ...todo }
+                />
+            </Catcher>
         ));
 
         return (
             <section className = { Styles.scheduler }>
-            <Spinner/>
+                <Spinner />
                 <main>
                     <header>
                         <h1>Task Manager</h1>
-                        <input placeholder = 'search' type = 'search' onChange = { this._searchTodo }/>
+                        <input placeholder = 'search' type = 'search' onChange = { this._searchTodo } />
                     </header>
                     <Formik
-                        initialValues = { scheduler.shape}
+                        initialValues = { scheduler.shape }
                         ref = { this.formikForm }
-                        render = {() => {
+                        render = { () => {
                             return (
-                        <section>
-                        <Form>
-                            <Field
-                                className = { Styles.createTask }
-                                maxLength = { 50 }
-                                placeholder = 'add task'
-                                type = 'text'
-                                name = 'todo'
-                            />
-                            <button type = 'submit'>add Todo</button>
-                        </Form>
-                        <div className = { Styles.overlay }>
-                            <ul>
-                                <FlipMove>{todoList}</FlipMove>
-                            </ul>
-                        </div>
-                        </section>
-                            )
-                        }}
+                                <section>
+                                    <Form>
+                                        <Field
+                                            className = { Styles.createTask }
+                                            maxLength = { 50 }
+                                            name = 'todo'
+                                            placeholder = 'add task'
+                                            type = 'text'
+                                        />
+                                        <button type = 'submit'>add Todo</button>
+                                    </Form>
+                                    <div className = { Styles.overlay }>
+                                        <ul>
+                                            <FlipMove>{todoList}</FlipMove>
+                                        </ul>
+                                    </div>
+                                </section>
+                            );
+                        } }
                         validationSchema = { scheduler.schema }
                         onSubmit = { this._submitForm }
                     />
                     <footer>
-                        <Checkbox 
-                        checked = { allCompleted }
-                        color1 = '#363636'
-                        color2 = '#fff'
-                        onClick = { actions.completeAllTodoAsync } />
+                        <Checkbox
+                            checked = { allCompleted }
+                            color1 = '#363636'
+                            color2 = '#fff'
+                            onClick = { actions.completeAllTodoAsync }
+                        />
                         <span className = { Styles.completeAllTasks }>
                             All tasks completed
                         </span>
@@ -141,3 +144,5 @@ export default class Scheduler extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Scheduler);
