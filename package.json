@@ -101,7 +101,7 @@
         "stylelint": "9.9.0",
         "url-loader": "1.1.2",
         "webpack": "4.28.4",
-        "webpack-bundle-analyzer": "3.0.3",
+        "webpack-bundle-analyzer": "3.3.2",
         "webpack-cli": "3.2.1",
         "webpack-dev-server": "3.1.14",
         "webpack-merge": "4.2.1",
