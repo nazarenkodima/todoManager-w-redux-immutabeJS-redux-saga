@@ -27,7 +27,7 @@
         "formik": "^1.5.2",
         "gsap": "2.0.2",
         "immutable": "4.0.0-rc.12",
-        "moment": "2.23.0",
+        "moment": "2.29.4",
         "react": "16.7.0",
         "react-dom": "16.7.0",
         "react-flip-move": "3.0.3",
